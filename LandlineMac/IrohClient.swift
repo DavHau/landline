@@ -83,6 +83,10 @@ final class IrohClient: ObservableObject {
     private var sessions: [UUID: PeerSession] = [:]
     private var connectingPeerIDs: Set<String> = []
     private var preferredSlotByPeerID: [String: Int] = [:]
+    private var desiredPeerIDs: Set<String> = []
+    private var reconnectAttempts: [String: Int] = [:]
+    private var reconnectTasks: [String: Task<Void, Never>] = [:]
+    private var participantRemovalTasks: [String: Task<Void, Never>] = [:]
     private var diagnosticSessionID: UUID?
 
     private var lastPathLogSignature = ""
@@ -193,6 +197,14 @@ final class IrohClient: ObservableObject {
 
         let trimmed = normalizedEndpointID(rawEndpointId)
         guard !trimmed.isEmpty, trimmed != endpointId else { return }
+
+        // A peer remains part of the desired group across transient QUIC/session
+        // failures. This prevents adding a second person from visually and
+        // logically evicting an already-connected first person while the mesh
+        // is converging.
+        desiredPeerIDs.insert(trimmed)
+        participantRemovalTasks.removeValue(forKey: trimmed)?.cancel()
+
         guard session(forPeerID: trimmed) == nil, !connectingPeerIDs.contains(trimmed) else { return }
 
         let existingParticipant = remoteSlots.contains(where: { $0?.id == trimmed })
@@ -237,8 +249,9 @@ final class IrohClient: ObservableObject {
             } catch {
                 self.connectingPeerIDs.remove(trimmed)
                 self.preferredSlotByPeerID.removeValue(forKey: trimmed)
-                self.lastError = error.localizedDescription
+                self.lastError = self.connectedPeerCount == 0 ? error.localizedDescription : nil
                 self.updateConnectionState()
+                self.scheduleReconnect(to: trimmed)
             }
         }
     }
@@ -250,6 +263,18 @@ final class IrohClient: ObservableObject {
         sessions.removeAll()
         connectingPeerIDs.removeAll()
         preferredSlotByPeerID.removeAll()
+        desiredPeerIDs.removeAll()
+
+        for task in reconnectTasks.values {
+            task.cancel()
+        }
+        reconnectTasks.removeAll()
+        reconnectAttempts.removeAll()
+
+        for task in participantRemovalTasks.values {
+            task.cancel()
+        }
+        participantRemovalTasks.removeAll()
 
         for session in currentSessions {
             session.receiveTask?.cancel()
@@ -490,6 +515,10 @@ final class IrohClient: ObservableObject {
 
         session.peerID = remoteID
         connectingPeerIDs.remove(remoteID)
+        desiredPeerIDs.insert(remoteID)
+        reconnectAttempts[remoteID] = 0
+        reconnectTasks.removeValue(forKey: remoteID)?.cancel()
+        participantRemovalTasks.removeValue(forKey: remoteID)?.cancel()
 
         let isExistingParticipant = remoteSlots.contains(where: { $0?.id == remoteID })
         if !isExistingParticipant && !remoteSlots.contains(where: { $0 == nil }) {
@@ -671,8 +700,83 @@ final class IrohClient: ObservableObject {
     }
 
     private func failSession(_ sessionID: UUID, error: Error) {
-        lastError = error.localizedDescription
-        removeSession(sessionID, clearParticipant: true)
+        let peerID = sessions[sessionID]?.peerID
+
+        // A failed edge is not the same thing as a participant leaving the
+        // Landline. Keep the participant in its dial slot while we repair the
+        // direct session. The previous behaviour immediately cleared the slot,
+        // which made an existing user appear to be replaced when a new mesh
+        // connection was being formed.
+        removeSession(sessionID, clearParticipant: false)
+        lastError = connectedPeerCount == 0 ? error.localizedDescription : nil
+
+        if let peerID {
+            scheduleReconnect(to: peerID)
+        }
+    }
+
+    private func scheduleReconnect(to rawPeerID: String) {
+        let peerID = normalizedEndpointID(rawPeerID)
+        guard endpointReady,
+              !peerID.isEmpty,
+              desiredPeerIDs.contains(peerID),
+              session(forPeerID: peerID) == nil,
+              !connectingPeerIDs.contains(peerID),
+              reconnectTasks[peerID] == nil
+        else { return }
+
+        let attempt = reconnectAttempts[peerID, default: 0]
+        guard attempt < 4 else {
+            scheduleParticipantRemoval(peerID)
+            return
+        }
+
+        reconnectAttempts[peerID] = attempt + 1
+        participantRemovalTasks.removeValue(forKey: peerID)?.cancel()
+        let delayMilliseconds = [300, 700, 1_500, 3_000][attempt]
+
+        reconnectTasks[peerID] = Task { @MainActor [weak self] in
+            try? await Task.sleep(for: .milliseconds(delayMilliseconds))
+            guard let self, !Task.isCancelled else { return }
+
+            self.reconnectTasks[peerID] = nil
+            guard self.endpointReady,
+                  self.desiredPeerIDs.contains(peerID),
+                  self.session(forPeerID: peerID) == nil,
+                  !self.connectingPeerIDs.contains(peerID)
+            else { return }
+
+            self.connect(to: peerID)
+        }
+    }
+
+    private func scheduleParticipantRemoval(_ peerID: String) {
+        guard participantRemovalTasks[peerID] == nil else { return }
+
+        participantRemovalTasks[peerID] = Task { @MainActor [weak self] in
+            // Give the direct mesh enough time to settle before declaring the
+            // peer gone. Four reconnect attempts already span roughly 5.5 s.
+            try? await Task.sleep(for: .seconds(5))
+            guard let self, !Task.isCancelled else { return }
+
+            self.participantRemovalTasks[peerID] = nil
+            guard self.session(forPeerID: peerID) == nil,
+                  !self.connectingPeerIDs.contains(peerID)
+            else { return }
+
+            self.desiredPeerIDs.remove(peerID)
+            self.reconnectAttempts.removeValue(forKey: peerID)
+            self.removeRemoteParticipant(peerID)
+
+            if self.remoteSpeakerID == peerID {
+                self.remoteSpeakerID = nil
+                self.remoteSpeakerName = nil
+                self.playback.reset()
+            }
+
+            self.updateConnectionState()
+            await self.broadcastMembership()
+        }
     }
 
     private func removeSession(_ sessionID: UUID, clearParticipant: Bool) {
