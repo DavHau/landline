@@ -29,6 +29,8 @@ For new UI flows, Landline uses a prototype-first native implementation sequence
 
 `prototypes/app/` is the canonical full browser prototype. `prototypes/experiments/` contains small isolated tests that do not become canonical behavior until their accepted result is integrated into the app prototype or otherwise documented.
 
+The current canonical browser prototype is **LANDLINE V22**. It includes the approved **Add Users** flow and is now the executable interaction reference for the next macOS feature handoff. See `prototypes/app/README.md` for the exact behavior.
+
 The browser prototype is a design/interaction validation implementation, not a production web client.
 
 ## Current macOS implementation
@@ -60,6 +62,8 @@ Current characteristics:
 The earlier WebSocket/relay implementation remains in the source tree as fallback/reference code, but the current UI sends and receives audio through `IrohClient`.
 
 The current distributable pipeline produces an Apple Silicon arm64 macOS 15+ build. It verifies the app icon, ad-hoc signing, ZIP packaging and post-extraction signature integrity. The current pinned Iroh dependency does not provide an x86_64 macOS slice, so this build must not be described as Universal.
+
+The next approved native UI feature is the V22 **Add Users** flow. It has not yet been implemented in the macOS client; the current canonical browser prototype and Figma design should be inspected before native work begins.
 
 ## Current Linux/NixOS implementation
 
