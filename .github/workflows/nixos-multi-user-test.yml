@@ -1,0 +1,90 @@
+name: Package NixOS multi-user test build
+
+on:
+  push:
+    branches: [feature/nixos-multi-user]
+    paths:
+      - 'LandlineNix/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'scripts/nixos_multi_user_port.py'
+      - '.github/workflows/nixos-multi-user-test.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Apply protocol v2 multi-user port
+        run: python3 scripts/nixos_multi_user_port.py
+
+      - name: Format and build Rust client
+        shell: bash
+        run: |
+          set -euo pipefail
+          nix develop --command bash -c '
+            set -euo pipefail
+            cargo fmt --manifest-path LandlineNix/Cargo.toml
+            cargo build --release --manifest-path LandlineNix/Cargo.toml
+          '
+
+      - name: Build Nix package
+        run: nix build .#landline -L
+
+      - name: Package exact Nix closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          STORE_PATH="$(readlink -f result)"
+          PACKAGE="LandlineNix-MultiUser-Test-2026-09-14"
+          mkdir -p "$PACKAGE"
+          printf '%s\n' "$STORE_PATH" > "$PACKAGE/store-path.txt"
+          nix-store --export $(nix-store -qR "$STORE_PATH") > "$PACKAGE/landline-nix-closure.nar"
+          git diff -- LandlineNix/src/network.rs LandlineNix/src/wire.rs LandlineNix/src/ui.rs > "$PACKAGE/multi-user-port.patch"
+          cat > "$PACKAGE/run-landline.sh" <<'SCRIPT'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          HERE="$(cd "$(dirname "$0")" && pwd)"
+          nix-store --import < "$HERE/landline-nix-closure.nar" >/dev/null
+          STORE_PATH="$(cat "$HERE/store-path.txt")"
+          exec "$STORE_PATH/bin/landline" "$@"
+          SCRIPT
+          chmod +x "$PACKAGE/run-landline.sh"
+          cat > "$PACKAGE/README.txt" <<'README'
+          LANDLINE NixOS multi-user test build
+
+          This build speaks Landline Iroh protocol v2 and is intended to interoperate
+          with the macOS multi-user test build from 10 September 2026.
+
+          To run on NixOS with Nix installed:
+            ./run-landline.sh
+
+          The script imports the exact prebuilt Nix closure contained in this package,
+          then launches Landline. No source compilation is required on the test machine.
+
+          Test focus:
+          - add one peer endpoint ID in LANDLINE > Iroh Settings
+          - membership discovery should form a direct mesh of up to 8 total users
+          - one PTT transmission should be audible by every connected peer
+          - all seven remote dial positions can display peers
+          - simultaneous PTT attempts use endpoint-ID ordering to choose one speaker
+          - local PTT remains usable before any peer is connected
+          README
+          tar -czf "$PACKAGE.tar.gz" "$PACKAGE"
+          sha256sum "$PACKAGE.tar.gz" > "$PACKAGE.tar.gz.sha256"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LandlineNix-MultiUser-Test-2026-09-14
+          path: |
+            LandlineNix-MultiUser-Test-2026-09-14.tar.gz
+            LandlineNix-MultiUser-Test-2026-09-14.tar.gz.sha256
+          if-no-files-found: error
+          retention-days: 14
