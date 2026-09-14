@@ -4,7 +4,7 @@ This file defines the standard context-loading workflow for ChatGPT conversation
 
 ## Shortcut
 
-When the user's entire message is `/context`, load the current Landline project context from this repository before continuing.
+When the user's entire message is `Load project context`, load the current Landline project context from this repository before continuing.
 
 Do not ask the user to restate project history that is already recorded here.
 
@@ -45,7 +45,7 @@ The preferred product-development sequence for new UI work is web prototype → 
 - Update the durable documents when their underlying product/design/architecture/development/protocol decisions change.
 - Do not rely on chat memory as the primary project record. Chat/project history may supplement the repository but should not override newer repository evidence.
 - Do not invent missing project history or prototype source. If the repository documentation/source does not support something, say so.
-- Do not modify files merely because `/context` was invoked. Context loading is read-only unless the user also asks for a change.
+- Do not modify files merely because `Load project context` was invoked. Context loading is read-only unless the user also asks for a change.
 - Do not reintroduce ZIP-file handoffs as the normal source workflow; work from the repository unless there is a specific diagnostic reason not to.
 
 ## Response after loading
