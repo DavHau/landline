@@ -94,7 +94,7 @@ Project continuity is stored in this repository rather than relying primarily on
 
 When starting a new Landline chat, send:
 
-`/context`
+`Load project context`
 
 The context loader in `CONTEXT.md` tells ChatGPT to read `docs/CURRENT.md`, this README, the durable project documents, relevant prototype/native source, and recent branch/commit state before continuing.
 
