@@ -2,7 +2,7 @@
 
 This is the concise continuity record for active Landline work. Update it whenever a meaningful milestone, technical decision, known issue, working baseline or next step changes.
 
-Last consolidated: 2026-09-08.
+Last consolidated: 2026-09-14.
 
 ## Repository / branch roles
 
@@ -15,7 +15,7 @@ GitHub is the durable source of truth. Do not return to ZIP-based source handoff
 
 ## Prototype-first product workflow — adopted
 
-Landline now uses a prototype-first implementation sequence for new UI flows:
+Landline uses a prototype-first implementation sequence for new UI flows:
 
 1. explore/design in Figma or discussion;
 2. implement and test the interaction in the browser prototype;
@@ -32,13 +32,23 @@ Repository locations:
 
 The browser prototype is a design-validation implementation, not a production web client.
 
-### Current prototype import status
+### Canonical browser prototype — V22 imported and active
 
-The repository structure and workflow documentation have been added on `chore/web-prototype-workflow`.
+The actual **LANDLINE browser prototype V22** is now committed under `prototypes/app/` and is the canonical executable interaction reference for approved browser behavior.
 
-The actual latest full Landline browser prototype is **not yet imported** because its source files are not present in the repository or in the currently available source archive. Do not recreate it from incomplete chat memory or screenshots and then treat that reconstruction as canonical.
+V22 is based on the established V21 browser prototype and includes the approved **Add Users** flow while retaining the existing Profile, PTT, status, volume, VU and avatar interactions.
 
-The latest approved **Add User** flow from the Prototyping Features work should be the first feature captured in `prototypes/app/`. Once the real prototype source is available/imported, use it as the executable reference for the macOS Add User implementation.
+Current Add Users behavior recorded in `prototypes/app/README.md`:
+
+- hover an empty dial slot to reveal the add-user state and `Add someone to Landline` status;
+- click an empty slot to open the Add / Invite sheet;
+- enter a Landline ID and press Return to populate the selected slot with a prototype contact;
+- the Invite section shows the local user's six-word Landline ID;
+- `Copy Landline ID` copies the ID, briefly shows `Copied`, then closes the sheet.
+
+The canonical prototype is deliberately lightweight and self-contained: plain HTML/CSS/JavaScript plus local assets, with no package manager or build step.
+
+The next native feature handoff is therefore no longer “import the prototype”; that step is complete. The approved V22 Add Users flow should now be implemented in the current macOS baseline, then brought to Linux/NixOS parity after macOS runtime approval.
 
 ## macOS baseline — `main`
 
@@ -123,9 +133,9 @@ Current Linux implementation includes:
 - avatar exchange through the existing Hello/profile payload;
 - Nix flake and locked dependency set.
 
-Real macOS ↔ NixOS two-way audio is proven. The current `linux-nix` GitHub Actions workflow is green at branch head.
+Real macOS ↔ NixOS two-way audio is proven. The current `linux-nix` GitHub Actions workflow is green at the last recorded branch head.
 
-Remaining Linux parity/runtime work is primarily real-desktop validation for opacity/theme behavior, Profile sheet treatment, image-picker/drop stability, avatar persistence/remote display, and any reproducible start-of-PTT crackle.
+Remaining Linux parity/runtime work is primarily real-desktop validation for opacity/theme behavior, Profile sheet treatment, image-picker/drop stability, avatar persistence/remote display, the approved Add Users flow after macOS implementation, and any reproducible start-of-PTT crackle.
 
 ## Product vs current transport
 
@@ -150,7 +160,8 @@ Longer-term direction discussed includes persistent Landline user/contact identi
 - Profile button hover scales the full 24 px button;
 - Profile opens Profile on both platforms; networking settings belong in Settings/app menu;
 - preserve established sheet geometry/hierarchy first; platform-specific blur/glass may differ;
-- macOS traffic lights stay at the established Figma centres and use caller-owned native standard buttons rather than re-parenting AppKit's window-owned instances.
+- macOS traffic lights stay at the established Figma centres and use caller-owned native standard buttons rather than re-parenting AppKit's window-owned instances;
+- for Add Users, treat `prototypes/app/` V22 plus the current Figma design as the executable/visual reference rather than reconstructing the flow from chat history.
 
 ## Design reference
 
@@ -160,15 +171,23 @@ Primary Figma prototype reference:
 
 When implementation and visual intent disagree, inspect the relevant Figma frame and current canonical web prototype before inventing a new treatment.
 
+## ChatGPT workspace continuity
+
+Matt is keeping his Personal ChatGPT workspace separate and has created an **Idealogue Business workspace** for work projects.
+
+Landline will be recreated as a Project in that Business workspace rather than merging the Personal workspace. No project state should depend on the old ChatGPT Project container: repository docs, source, prototype files and branch state are the durable record.
+
+The new Business Project should retain the minimal `/context` instruction that points ChatGPT to this repository's `CONTEXT.md`. `CONTEXT.md` then defines the full load order and continuity rules.
+
 ## Current next step
 
-Complete the new prototype-first handoff for **Add User**:
+Implement the approved V22 **Add Users** flow natively on macOS:
 
-1. import the actual latest Landline browser prototype source into `prototypes/app/`;
-2. verify that the approved Add User flow is present and capture any non-obvious behavior in the prototype documentation;
-3. inspect the current macOS `main` implementation against that prototype;
-4. implement Add User in Swift from the current macOS baseline;
-5. build and runtime-test the new macOS flow;
-6. once macOS behavior is approved, bring the Linux/NixOS client to parity.
+1. inspect `prototypes/app/README.md`, `prototypes/app/index.html`, `prototypes/app/styles.css` and the relevant current Figma frames;
+2. inspect the current macOS `main` implementation and identify the minimal native state/UI additions required for empty-slot hover, Add / Invite sheet, Landline-ID entry and copy feedback;
+3. implement Add Users in Swift from the current macOS baseline while preserving existing PTT/network/profile behavior;
+4. build and runtime-test the macOS flow;
+5. once macOS behavior is approved, bring the Linux/NixOS client to parity;
+6. run cross-platform validation if the native implementation begins to connect Add Users to real identity/network state rather than prototype-only placeholder contacts.
 
-The existing macOS traffic-light longevity test and microphone first-permission runtime re-test remain outstanding regression checks and should not be lost during Add User work.
+The existing macOS traffic-light longevity test and microphone first-permission runtime re-test remain outstanding regression checks and should not be lost during Add Users work.
