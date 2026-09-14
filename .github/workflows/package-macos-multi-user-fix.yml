@@ -25,8 +25,10 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/fix_macos_multi_user_runtime.py
+          python3 scripts/fix_macos_default_avatar_asset.py
           git diff --check
-          test -f LandlineMac/Resources/avatar_toyface.png
+          test -f LandlineMac/Assets.xcassets/ToyBuddha.imageset/avatar-toyface.png
+          test -f LandlineMac/Assets.xcassets/ToyBuddha.imageset/Contents.json
 
       - name: Build Apple Silicon Release app
         run: |
@@ -48,7 +50,9 @@ jobs:
           APP="$RUNNER_TEMP/LandlineDerivedData/Build/Products/Release/LandlineMac.app"
           test -d "$APP"
           file "$APP/Contents/MacOS/LandlineMac" | grep -q 'arm64'
-          test -f "$APP/Contents/Resources/avatar_toyface.png"
+          ASSETUTIL="$(xcrun --find assetutil)"
+          "$ASSETUTIL" --info "$APP/Contents/Resources/Assets.car" > "$RUNNER_TEMP/assets.json"
+          grep -q 'ToyBuddha' "$RUNNER_TEMP/assets.json"
           codesign --force --deep --sign - "$APP"
           codesign --verify --deep --strict --verbose=2 "$APP"
 
@@ -62,7 +66,8 @@ jobs:
           mkdir -p "$VERIFY"
           ditto -x -k "$ZIP" "$VERIFY"
           codesign --verify --deep --strict --verbose=2 "$VERIFY/LandlineMac.app"
-          test -f "$VERIFY/LandlineMac.app/Contents/Resources/avatar_toyface.png"
+          ASSETUTIL="$(xcrun --find assetutil)"
+          "$ASSETUTIL" --info "$VERIFY/LandlineMac.app/Contents/Resources/Assets.car" | grep -q 'ToyBuddha'
           shasum -a 256 "$ZIP" | tee "$RUNNER_TEMP/LandlineMac-MultiUser-Fix-Test-2026-09-14.zip.sha256"
 
       - name: Upload repair test build
@@ -80,7 +85,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm scripts/fix_macos_multi_user_runtime.py .github/workflows/package-macos-multi-user-fix.yml
-          git add LandlineMac/IrohClient.swift LandlineMac/ContentView.swift LandlineMac/Resources/avatar_toyface.png
+          git rm scripts/fix_macos_multi_user_runtime.py scripts/fix_macos_default_avatar_asset.py .github/workflows/package-macos-multi-user-fix.yml
+          git add LandlineMac/IrohClient.swift LandlineMac/Assets.xcassets/ToyBuddha.imageset
           git commit -m "Fix macOS multi-user participant retention and default avatar"
           git push origin HEAD:feature/macos-multi-user-fix
