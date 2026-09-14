@@ -154,7 +154,7 @@ Update durable docs when the underlying decision changes:
 - `DEVELOPMENT.md` — prototype/build/branch/test workflow
 - `PROTOCOL.md` — cross-platform wire contract
 
-`/context` itself is read-only. Do not edit documentation simply because a context load occurred.
+`Load project context` itself is read-only. Do not edit documentation simply because a context load occurred.
 
 ## Secrets and generated files
 
