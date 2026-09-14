@@ -10,6 +10,8 @@ Recorded prototype reference:
 
 Figma remains the source of truth for intended visual design when a current frame exists. Do not invent missing visual details if the relevant Figma design can be inspected.
 
+For approved interaction behavior, the current canonical browser prototype under `prototypes/app/` is the executable reference to inspect alongside Figma before changing native UI.
+
 ## Canvas and grid
 
 The established desktop design is a fixed:
@@ -33,6 +35,21 @@ Cross-platform implementations should preserve these main layout relationships b
 - Seven remote positions are distributed around the circular dial.
 - Empty positions should remain visually quieter than active contacts.
 - Demo/dummy participants should not be reintroduced into production-facing states merely to fill the dial.
+
+## Add Users / Invite interaction
+
+The canonical browser prototype **V22** under `prototypes/app/` defines the approved interaction reference for adding people from empty dial slots.
+
+Current approved behavior:
+
+- hovering an empty dial slot reveals the 56 px add-user state and changes status copy to `Add someone to Landline`;
+- clicking an empty slot opens the Add / Invite sheet;
+- the **Add someone** section accepts a Landline ID;
+- pressing Return after entering an ID populates the selected slot with a prototype contact and closes the sheet;
+- the **Invite someone** section displays the local user's six-word Landline ID;
+- **Copy Landline ID** copies the ID, briefly changes to `Copied`, then closes the sheet.
+
+When implementing this flow natively, preserve the current Figma geometry/visual treatment and V22 interaction sequencing. The browser prototype's generated contact is placeholder product-validation state; do not mistake it for a finalized identity/network architecture.
 
 ## Push-to-talk
 
