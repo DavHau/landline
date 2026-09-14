@@ -177,7 +177,7 @@ Matt is keeping his Personal ChatGPT workspace separate and has created an **Ide
 
 Landline will be recreated as a Project in that Business workspace rather than merging the Personal workspace. No project state should depend on the old ChatGPT Project container: repository docs, source, prototype files and branch state are the durable record.
 
-The new Business Project should retain the minimal `/context` instruction that points ChatGPT to this repository's `CONTEXT.md`. `CONTEXT.md` then defines the full load order and continuity rules.
+The standard fresh-chat context phrase is now **`Load project context`** rather than `/context`, to avoid collision with ChatGPT's own slash-command UI. The new Business Project should include a minimal instruction that points ChatGPT to this repository's `CONTEXT.md` when that phrase is sent. `CONTEXT.md` then defines the full load order and continuity rules.
 
 ## Current next step
 
