@@ -1,0 +1,86 @@
+name: Package macOS multi-user repair test
+
+on:
+  push:
+    branches:
+      - feature/macos-multi-user-fix
+    paths:
+      - .github/workflows/package-macos-multi-user-fix.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair-build-package:
+    runs-on: macos-15
+    steps:
+      - name: Check out repair branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/macos-multi-user-fix
+          fetch-depth: 0
+
+      - name: Apply runtime repair
+        run: |
+          set -euo pipefail
+          python3 scripts/fix_macos_multi_user_runtime.py
+          git diff --check
+          test -f LandlineMac/Resources/avatar_toyface.png
+
+      - name: Build Apple Silicon Release app
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project LandlineMac.xcodeproj \
+            -scheme LandlineMac \
+            -configuration Release \
+            -destination 'platform=macOS,arch=arm64' \
+            -derivedDataPath "$RUNNER_TEMP/LandlineDerivedData" \
+            ARCHS=arm64 \
+            ONLY_ACTIVE_ARCH=YES \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Verify bundled default avatar and sign app
+        run: |
+          set -euo pipefail
+          APP="$RUNNER_TEMP/LandlineDerivedData/Build/Products/Release/LandlineMac.app"
+          test -d "$APP"
+          file "$APP/Contents/MacOS/LandlineMac" | grep -q 'arm64'
+          test -f "$APP/Contents/Resources/avatar_toyface.png"
+          codesign --force --deep --sign - "$APP"
+          codesign --verify --deep --strict --verbose=2 "$APP"
+
+      - name: Package and verify ZIP
+        run: |
+          set -euo pipefail
+          APP="$RUNNER_TEMP/LandlineDerivedData/Build/Products/Release/LandlineMac.app"
+          ZIP="$RUNNER_TEMP/LandlineMac-MultiUser-Fix-Test-2026-09-14.zip"
+          VERIFY="$RUNNER_TEMP/verify-package"
+          ditto -c -k --sequesterRsrc --keepParent "$APP" "$ZIP"
+          mkdir -p "$VERIFY"
+          ditto -x -k "$ZIP" "$VERIFY"
+          codesign --verify --deep --strict --verbose=2 "$VERIFY/LandlineMac.app"
+          test -f "$VERIFY/LandlineMac.app/Contents/Resources/avatar_toyface.png"
+          shasum -a 256 "$ZIP" | tee "$RUNNER_TEMP/LandlineMac-MultiUser-Fix-Test-2026-09-14.zip.sha256"
+
+      - name: Upload repair test build
+        uses: actions/upload-artifact@v4
+        with:
+          name: LandlineMac-MultiUser-Fix-Test-2026-09-14
+          path: |
+            ${{ runner.temp }}/LandlineMac-MultiUser-Fix-Test-2026-09-14.zip
+            ${{ runner.temp }}/LandlineMac-MultiUser-Fix-Test-2026-09-14.zip.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Commit validated repair source
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm scripts/fix_macos_multi_user_runtime.py .github/workflows/package-macos-multi-user-fix.yml
+          git add LandlineMac/IrohClient.swift LandlineMac/ContentView.swift LandlineMac/Resources/avatar_toyface.png
+          git commit -m "Fix macOS multi-user participant retention and default avatar"
+          git push origin HEAD:feature/macos-multi-user-fix
