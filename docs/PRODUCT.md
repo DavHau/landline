@@ -69,6 +69,19 @@ The local user can create/edit a simple profile including:
 
 The macOS implementation persists profile information and sends the current profile to the connected peer through the Iroh hello message.
 
+## Add Users / Invite flow
+
+The canonical browser prototype V22 defines the currently approved **Add Users** interaction:
+
+- hovering an empty dial slot reveals the add-user state and `Add someone to Landline` status copy;
+- clicking an empty slot opens the Add / Invite sheet;
+- the **Add someone** section accepts a Landline ID;
+- pressing Return after entering an ID populates the selected slot with a prototype contact and closes the sheet;
+- the **Invite someone** section shows the local user's six-word Landline ID;
+- **Copy Landline ID** copies that ID, briefly shows `Copied`, then closes the sheet.
+
+This interaction is approved as the native UI handoff reference, but the current browser behavior still uses prototype contact state. The underlying production identity/discovery/network semantics are not yet fully implemented. Do not infer that the six-word Landline ID is already a finished wire-level identity/contact system merely because the UI flow exists in V22.
+
 ## Connectivity model
 
 Current connection setup is intentionally manual for the technical integration phase:
@@ -77,7 +90,7 @@ Current connection setup is intentionally manual for the technical integration p
 - one peer's endpoint ID is entered into the other client;
 - Iroh handles the path, including direct connectivity or relay when required.
 
-Manual endpoint-ID entry is not necessarily the final consumer-facing discovery/onboarding experience. It exists to prove transport and cross-platform interoperability before a more polished contact/discovery model is designed.
+Manual endpoint-ID entry is not necessarily the final consumer-facing discovery/onboarding experience. It exists to prove transport and cross-platform interoperability while the approved Add Users/Invite UI is brought into the native apps and the durable contact/identity mapping is designed.
 
 ## Platform direction
 
@@ -90,14 +103,18 @@ The platform implementations should preserve the same product behavior and wire 
 
 ## Current versus future scope
 
-Current technical milestone:
+Current product/technical milestone:
 
-- prove reliable peer connection and two-way PTT audio across networks and platforms while preserving the established Landline UI.
+- preserve the proven peer connection and two-way PTT audio baseline across networks/platforms;
+- implement the approved V22 Add Users/Invite interaction natively on macOS;
+- after macOS approval, bring Linux/NixOS to parity;
+- keep prototype-only contact state separate from any later real identity/contact protocol until that architecture is explicitly decided.
 
 Likely later product work includes:
 
 - multiple simultaneous remote participants rather than the current one-to-one transport;
-- a user-friendly contact/discovery/invite flow instead of manual endpoint IDs;
+- durable contact/discovery semantics behind the approved Add Users/Invite interaction;
+- automatic reconnect and friend/contact persistence decisions;
 - stronger cross-platform visual parity;
 - polished packaging/install/update flows;
 - persistence/sync decisions for contacts and identity beyond the current local profile/endpoint persistence.
