@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LANDLINE — Dial groups prototype</title>
+  <style>
+    :root{font-family:Inter,"Helvetica Neue",Arial,sans-serif;color:#fff;background:#f4f4f2}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f4f4f2}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    .app{position:relative;width:320px;height:672px;overflow:hidden;border-radius:24px;background:rgba(171,171,171,.60);box-shadow:0 0 25px rgba(0,0,0,.10);backdrop-filter:blur(15px)}
+    .top{position:absolute;inset:16px 16px auto 16px;height:32px}
+    .traffic{position:absolute;left:0;top:0;width:64px;height:32px;border-radius:10px;background:rgba(0,0,0,.20);display:flex;gap:8px;align-items:center;padding-left:10px}
+    .traffic i{width:12px;height:12px;border-radius:50%;display:block;background:#ff6157}.traffic i:nth-child(2),.traffic i:nth-child(3){background:#eef0ed}
+    .group-title{position:absolute;left:72px;top:0;width:176px;height:32px;border:0;border-radius:10px;background:#1d1e1d;color:#cdd1cd;display:flex;align-items:center;padding:0 10px;gap:10px;text-align:left}
+    .group-title .mini{width:12px;height:12px;border-radius:50%;object-fit:cover;background:linear-gradient(135deg,#8b520d,#4a1d01);flex:0 0 12px}
+    .group-title .label{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+    .chev{width:8px;height:8px;border-right:1.5px solid #9ea39e;border-bottom:1.5px solid #9ea39e;transform:rotate(45deg) translateY(-2px);transition:.16s transform}
+    .group-title[aria-expanded="true"] .chev{transform:rotate(225deg) translate(-1px,-1px)}
+    .groups-button{position:absolute;right:0;top:0;width:32px;height:32px;border:0;border-radius:10px;background:#1d1e1d;color:#cdd1cd;display:grid;place-items:center}
+    .groups-button span{width:12px;height:12px;border:1.5px solid #cdd1cd;border-radius:50%;position:relative}.groups-button span:before,.groups-button span:after{content:"";position:absolute;width:4px;height:4px;border:1px solid #cdd1cd;border-radius:50%;top:2px}.groups-button span:before{left:-5px}.groups-button span:after{right:-5px}
+    .dropdown{position:absolute;z-index:8;left:88px;top:16px;width:184px;height:128px;border-radius:10px;background:#1d1e1d;overflow:hidden;opacity:0;pointer-events:none;transform:scale(.98);transform-origin:top center;transition:.12s ease}
+    .dropdown.open{opacity:1;pointer-events:auto;transform:scale(1)}
+    .dropdown button{height:32px;width:100%;border:0;background:transparent;color:#ebebeb;padding:0 10px;display:flex;align-items:center;gap:10px;text-align:left;font-size:12px;font-weight:500}
+    .dropdown button:hover{background:#2a2c2a}.dropdown .mini{width:12px;height:12px;border-radius:50%;flex:0 0 12px}.home-mini{background:#7d4b0b url('assets/avatar-toyface.png') center/cover}.orange{background:linear-gradient(135deg,#ff9d4d,#ff4f73)}.pink{background:linear-gradient(135deg,#ff3c91,#7a22d4)}.blue{background:#148bb6}
+    .dial{position:absolute;left:24px;top:96px;width:272px;height:272px;border-radius:50%;background:#1d1e1d}
+    .avatar{position:absolute;width:48px;height:48px;border-radius:50%;overflow:hidden;background:#0b0b0b}.avatar img{width:100%;height:100%;object-fit:cover}.self{left:112px;top:24px}.p2{left:174px;top:50px}.p3{left:200px;top:112px}.p4{left:174px;top:174px}.p5{left:112px;top:200px}.p6{left:50px;top:174px}.p7{left:24px;top:112px}.p8{left:50px;top:50px}
+    .ptt{position:absolute;left:94px;top:94px;width:84px;height:84px;border:0;border-radius:50%;background:#ff6157;color:#0b0b0b;font-size:26px;font-weight:700}
+    .panel{position:absolute;left:24px;width:272px;border-radius:16px;background:#1d1e1d}.status{top:408px;height:48px;display:flex;align-items:center;gap:10px;padding:0 12px;color:#d9d9d9;font-size:10px}.status .mic{font-size:17px}.volume{top:472px;height:80px;padding:12px 24px}.volume-row{display:flex;justify-content:space-between;font:600 13px/20px Inter,Arial}.track{position:absolute;left:24px;right:24px;bottom:24px;height:8px;border-radius:8px;background:#0b0b0b}.track:before{content:"";display:block;width:25%;height:100%;border-radius:8px;background:#17b239}.track:after{content:"";position:absolute;left:calc(25% - 12px);top:-8px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 6px #17b239}
+    .vu{top:568px;height:80px;padding:12px;display:flex;align-items:center;gap:8px}.vu i{height:56px;width:8px;border-radius:4px;background:#777f78}.vu i:nth-child(-n+6){background:#17b239}
+    .sheet-overlay{position:absolute;z-index:12;inset:0;pointer-events:none}.sheet-overlay.open{pointer-events:auto}.glass{position:absolute;inset:0;border:0;background:rgba(255,255,255,.12);backdrop-filter:blur(12px);opacity:0;transition:.18s opacity}.sheet-overlay.open .glass{opacity:1}.sheet{position:absolute;left:0;bottom:0;width:320px;height:584px;border-radius:16px 16px 0 0;background:rgba(255,255,255,.96);color:#171717;transform:translateY(100%);transition:.24s cubic-bezier(.2,.8,.2,1);overflow:hidden}.sheet-overlay.open .sheet{transform:translateY(0)}
+    .sheet h2{position:absolute;left:24px;top:16px;margin:0;width:248px;height:72px;display:flex;align-items:center;font-size:20px;line-height:1;font-weight:650}.close{position:absolute;right:8px;top:8px;width:32px;height:32px;border:0;background:transparent;font-size:24px;color:#171717}.group-list{position:absolute;left:24px;top:104px;width:272px;display:grid;gap:24px}.group-row{width:100%;height:32px;border:0;background:transparent;color:#171717;display:flex;align-items:center;gap:16px;padding:0;text-align:left;font-size:14px}.group-row .dot{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:white;flex:0 0 32px}.group-row.create .dot{background:#a4aaa5;font-size:24px;font-weight:300}.group-row:hover{opacity:.72}
+    .create-sheet h2{height:104px;top:0}.field-label{position:absolute;left:24px;top:90px;width:272px;font-size:14px;font-weight:500}.id-field{position:absolute;left:24px;top:120px;width:272px;height:48px;border:0;border-radius:16px;background:#fff;padding:0 16px;color:#171717;outline:none;font-size:12px}.id-field::placeholder{color:#cdd1cd}.add-button{position:absolute;left:24px;top:184px;width:272px;height:48px;border:0;border-radius:16px;background:#171717;color:white;font-size:14px;font-weight:600}.add-button:disabled,.next:disabled{opacity:.2}.bottom-actions{position:absolute;left:24px;bottom:24px;width:272px;display:flex;gap:16px}.bottom-actions button{width:128px;height:48px;border-radius:16px;font-size:14px;font-weight:600}.cancel{background:white;border:1px solid #171717;color:#171717}.next{background:#171717;border:0;color:white}
+  </style>
+</head>
+<body>
+  <main class="app" id="app">
+    <div class="top">
+      <div class="traffic" aria-hidden="true"><i></i><i></i><i></i></div>
+      <button class="group-title" id="group-title" aria-expanded="false"><span class="mini home-mini" id="group-title-icon"></span><span class="label" id="group-title-label">Home dial</span><span class="chev"></span></button>
+      <button class="groups-button" id="groups-button" aria-label="Dial groups"><span></span></button>
+    </div>
+    <div class="dropdown" id="group-dropdown" role="menu">
+      <button data-group="home"><span class="mini home-mini"></span>Home dial</button>
+      <button data-group="saori"><span class="mini orange"></span>Saori, Matt</button>
+      <button data-group="work"><span class="mini pink"></span>Work people</button>
+      <button data-group="family"><span class="mini blue"></span>Family chat</button>
+    </div>
+    <section class="dial" aria-label="Current dial">
+      <div class="avatar self"><img id="self-avatar" src="assets/avatar-toyface.png" alt="Saori"></div>
+      <div class="avatar p2" id="member-slot"></div><div class="avatar p3"></div><div class="avatar p4"></div><div class="avatar p5"></div><div class="avatar p6"></div><div class="avatar p7"></div><div class="avatar p8"></div>
+      <button class="ptt" aria-label="Push and hold to talk">⌁</button>
+    </section>
+    <div class="panel status"><span class="mic">♩</span><span>Click to talk</span></div>
+    <div class="panel volume"><div class="volume-row"><span>Volume</span><span>25</span></div><div class="track"></div></div>
+    <div class="panel vu" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+    <div class="sheet-overlay" id="groups-overlay" aria-hidden="true">
+      <button class="glass" data-close="groups" aria-label="Close dial groups"></button>
+      <section class="sheet" aria-label="Dial groups">
+        <h2>Dial groups</h2><button class="close" data-close="groups" aria-label="Close">×</button>
+        <div class="group-list">
+          <button class="group-row create" id="create-dial"><span class="dot">+</span><span>Create a dial</span></button>
+          <button class="group-row" data-select="saori"><span class="dot orange"></span><span>Saori, Matt</span></button>
+          <button class="group-row" data-select="work"><span class="dot pink"></span><span>Work people</span></button>
+          <button class="group-row" data-select="family"><span class="dot blue"></span><span>Family chat</span></button>
+        </div>
+      </section>
+    </div>
+
+    <div class="sheet-overlay" id="create-overlay" aria-hidden="true">
+      <button class="glass" data-close="create" aria-label="Close create dial"></button>
+      <section class="sheet create-sheet" aria-label="Create a dial">
+        <h2>Create a dial</h2><button class="close" data-close="create" aria-label="Close">×</button>
+        <label class="field-label" for="dial-id">Enter a Landline ID</label>
+        <input class="id-field" id="dial-id" placeholder="horse-window-apple-tv-consume-wall" autocomplete="off">
+        <button class="add-button" id="add-to-landline" disabled>Add to Landline</button>
+        <div class="bottom-actions"><button class="cancel" data-close="create">Cancel</button><button class="next" id="next" disabled>Next</button></div>
+      </section>
+    </div>
+  </main>
+<script>
+(() => {
+  const title = document.getElementById('group-title');
+  const label = document.getElementById('group-title-label');
+  const icon = document.getElementById('group-title-icon');
+  const dropdown = document.getElementById('group-dropdown');
+  const groupsOverlay = document.getElementById('groups-overlay');
+  const createOverlay = document.getElementById('create-overlay');
+  const memberSlot = document.getElementById('member-slot');
+  const idField = document.getElementById('dial-id');
+  const addButton = document.getElementById('add-to-landline');
+  const nextButton = document.getElementById('next');
+  const groups = {
+    home: {label:'Home dial', cls:'home-mini'},
+    saori: {label:'Saori, Matt', cls:'orange'},
+    work: {label:'Work people', cls:'pink'},
+    family: {label:'Family chat', cls:'blue'}
+  };
+  const closeDropdown = () => { dropdown.classList.remove('open'); title.setAttribute('aria-expanded','false'); };
+  const selectGroup = (key) => {
+    const group = groups[key]; if (!group) return;
+    label.textContent = group.label;
+    icon.className = 'mini ' + group.cls;
+    memberSlot.innerHTML = key === 'saori' ? '<img src="assets/avatar-micheal.png" alt="Matt">' : '';
+    closeDropdown();
+    groupsOverlay.classList.remove('open'); groupsOverlay.setAttribute('aria-hidden','true');
+  };
+  title.addEventListener('click', () => {
+    const open = !dropdown.classList.contains('open');
+    dropdown.classList.toggle('open', open); title.setAttribute('aria-expanded', String(open));
+  });
+  dropdown.querySelectorAll('[data-group]').forEach(b => b.addEventListener('click', () => selectGroup(b.dataset.group)));
+  document.getElementById('groups-button').addEventListener('click', () => {
+    closeDropdown(); groupsOverlay.classList.add('open'); groupsOverlay.setAttribute('aria-hidden','false');
+  });
+  document.querySelectorAll('[data-select]').forEach(b => b.addEventListener('click', () => selectGroup(b.dataset.select)));
+  document.getElementById('create-dial').addEventListener('click', () => {
+    groupsOverlay.classList.remove('open'); groupsOverlay.setAttribute('aria-hidden','true');
+    createOverlay.classList.add('open'); createOverlay.setAttribute('aria-hidden','false');
+    setTimeout(() => idField.focus(), 240);
+  });
+  document.querySelectorAll('[data-close="groups"]').forEach(b => b.addEventListener('click', () => { groupsOverlay.classList.remove('open'); groupsOverlay.setAttribute('aria-hidden','true'); }));
+  document.querySelectorAll('[data-close="create"]').forEach(b => b.addEventListener('click', () => { createOverlay.classList.remove('open'); createOverlay.setAttribute('aria-hidden','true'); idField.value=''; addButton.disabled=true; nextButton.disabled=true; }));
+  idField.addEventListener('input', () => { const ready = Boolean(idField.value.trim()); addButton.disabled=!ready; });
+  addButton.addEventListener('click', () => { if (addButton.disabled) return; addButton.textContent='Added'; addButton.disabled=true; nextButton.disabled=false; });
+  window.addEventListener('click', e => { if (!title.contains(e.target) && !dropdown.contains(e.target)) closeDropdown(); });
+  window.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDropdown(); groupsOverlay.classList.remove('open'); createOverlay.classList.remove('open'); } });
+})();
+</script>
+</body>
+</html>
