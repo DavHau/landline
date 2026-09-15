@@ -30,6 +30,10 @@ The web prototype is therefore a design-validation implementation, not a product
 - Record important approved interaction decisions in the relevant prototype README and durable project docs.
 - Do not treat an experiment as the canonical app behavior until its result has been accepted and integrated into `app/`.
 
+## Prototype delivery
+
+When ChatGPT is asked to build a Landline prototype, the deliverable should include a browser-ready `.zip` containing the complete prototype source needed to run it locally, including HTML, CSS, JavaScript and any required local assets/source files. The archive should be self-contained so the user can unzip it and open the HTML entry point directly in a browser without a build step unless the prototype explicitly requires one.
+
 ## Source of truth
 
 For visual intent, current Figma frames remain the primary design source of truth. The web prototype is the primary executable interaction reference for an approved flow before native implementation.
