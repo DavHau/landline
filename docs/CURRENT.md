@@ -41,6 +41,8 @@ The browser prototype is a design-validation implementation, not a production we
 
 Landline V22 is committed under `prototypes/app/` and remains the executable interaction reference for the approved Add User flow. It includes empty-slot hover, Add/Invite sheet, Landline-ID entry, copy-ID feedback, Profile, PTT, status, volume, VU and avatar interactions.
 
+A focused Dial Groups / Create a dial prototype now lives at `prototypes/app/group-creation.html`, based on the Figma `Create group` section (`4193:1036`). It currently covers two review-stage interactions without modifying the proven V22 baseline: clicking the top group title opens the dial-title dropdown and selecting `Saori, Matt` switches the title/dial state; clicking the top-right dial-groups icon opens the `Dial groups` bottom sheet and choosing `Create a dial` transitions to the first `Create a dial` sheet. The prototype intentionally stops before the later dial-group-profile step until that follow-on flow is explicitly taken into scope. Once the interaction is approved, fold it into the full canonical app prototype rather than leaving a divergent focused page.
+
 ## Stable macOS baseline — `main`
 
 The stable macOS implementation on `main` is the integrated SwiftUI/AppKit + Iroh baseline historically called Landline Iroh Spike V10.
@@ -208,6 +210,10 @@ Ad-hoc signing is appropriate for test builds, not release notarization.
 Primary Figma prototype reference:
 
 `https://www.figma.com/proto/cbBv0kCV29fX8h2QXbZNDk/SpacesOS-2026?node-id=3911-102362&p=f&viewport=-1105%2C1488%2C0.5&t=zjZbXgJbbsOfVRT9-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=3911%3A102362&page-id=3889%3A130618`
+
+Dial Groups / Create a dial design reference:
+
+`https://www.figma.com/design/cbBv0kCV29fX8h2QXbZNDk/SpacesOS-2026?node-id=4193-1036`
 
 When implementation and visual intent disagree, inspect the relevant Figma frame and current canonical browser prototype before inventing a new treatment.
 
