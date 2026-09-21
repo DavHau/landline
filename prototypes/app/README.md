@@ -16,6 +16,8 @@ The latest approved review artifact is **Landline V23.13** (browser-ready ZIP ha
 
 The current **V23.14 review build** is pending approval. Relative to V23.13, `Edit profile` and `Dial groups` now use top-left arrows back to `Saori’s Landline` instead of close buttons; back-arrow backgrounds are transparent at rest and `#F3F3F3` on hover; and the supplied Saori’s Landline menu icons use a 110% hover scale.
 
+The current **V23.15 review build** adds Figma-matched member states for the group dials: Work people shows Fiona, Stuart and Matt; Family chat shows Yumie and Michiyo. The back-arrow hover is explicitly a solid `#F3F3F3` at 100% opacity, while the default state remains transparent. V23.15 preserves the established app → sheet slide-up and sheet → sheet in-place content-swap behavior.
+
 ## V22 Add Users flow
 
 - Hover any empty dial slot to reveal the 56 px add-user state and the `Add someone to Landline` status message.
