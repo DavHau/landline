@@ -1,4 +1,4 @@
-LANDLINE browser prototype V23.16 — Create Group flow
+LANDLINE browser prototype V23.17 — Create Group flow
 
 V23.16 is the current cumulative browser prototype on the web-prototype branch.
 
@@ -31,3 +31,12 @@ DESIGN REFERENCE
 https://www.figma.com/design/cbBv0kCV29fX8h2QXbZNDk/SpacesOS-2026?node-id=4193-1036
 
 Open index.html directly in a modern browser. No build step is required.
+
+
+V23.17 main-sheet / dial-group-page refinements
+- Saori’s Landline is now the 320 × 240 main sheet from Figma node 4221:1243.
+- Choosing Edit profile or Groups expands the existing sheet surface from 240px to 584px; returning with the back arrow collapses it to 240px without replaying the app-to-sheet slide.
+- Dial groups -> Work people now opens the Figma Dial group page Work people (node 4256:56204).
+- Dial groups -> Family chat now opens the Figma Dial group page Family chat (node 4256:56231).
+- Work people detail shows Fiona, Matt, Saori, and Stuart; Family chat detail shows Saori, Yumie, and Michiyo.
+- Start dial on each detail page switches to the corresponding accepted dial state; Edit group profile reuses the existing profile-edit flow and returns to the originating group page.

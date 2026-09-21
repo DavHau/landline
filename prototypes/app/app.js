@@ -41,27 +41,66 @@
     groupTitle.setAttribute('aria-expanded', 'false');
   };
 
+  let sheetSizeTimer = 0;
+  const clearSheetSizing = (sheet) => {
+    if (!sheet) return;
+    sheet.classList.remove('sheet-size-motion');
+    sheet.style.height = '';
+  };
+
   const closeAllSheets = () => {
+    window.clearTimeout(sheetSizeTimer);
+    sheetSizeTimer = 0;
     overlays.forEach((overlay) => {
       overlay.classList.remove('is-open', 'no-enter-motion');
       overlay.setAttribute('aria-hidden', 'true');
+      clearSheetSizing(overlay.querySelector('.bottom-sheet'));
     });
   };
 
   const openSheet = (id) => {
     closeDropdown();
-    const switchingBetweenSheets = overlays.some((overlay) => overlay.classList.contains('is-open'));
-    closeAllSheets();
+    const currentOverlay = overlays.find((overlay) => overlay.classList.contains('is-open'));
+    const switchingBetweenSheets = Boolean(currentOverlay && currentOverlay.id !== id);
+    const sourceSheet = currentOverlay && currentOverlay.querySelector('.bottom-sheet');
+    const sourceHeight = sourceSheet ? sourceSheet.getBoundingClientRect().height : 0;
+
+    window.clearTimeout(sheetSizeTimer);
+    overlays.forEach((item) => {
+      item.classList.remove('is-open', 'no-enter-motion');
+      item.setAttribute('aria-hidden', 'true');
+      clearSheetSizing(item.querySelector('.bottom-sheet'));
+    });
+
     const overlay = document.getElementById(id);
     if (!overlay) return;
+    const targetSheet = overlay.querySelector('.bottom-sheet');
+    const targetHeight = targetSheet && targetSheet.classList.contains('sheet-240') ? 240 : 584;
+    const sizeChanges = switchingBetweenSheets && sourceHeight && Math.abs(sourceHeight - targetHeight) > 1;
 
     if (switchingBetweenSheets) overlay.classList.add('no-enter-motion');
+    if (sizeChanges && targetSheet) {
+      targetSheet.style.height = sourceHeight + 'px';
+      targetSheet.classList.add('sheet-size-motion');
+    }
+
     overlay.classList.add('is-open');
     overlay.setAttribute('aria-hidden', 'false');
 
     if (switchingBetweenSheets) {
       window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => overlay.classList.remove('no-enter-motion'));
+        window.requestAnimationFrame(() => {
+          if (sizeChanges && targetSheet) {
+            targetSheet.style.height = targetHeight + 'px';
+            sheetSizeTimer = window.setTimeout(() => {
+              clearSheetSizing(targetSheet);
+              overlay.classList.remove('no-enter-motion');
+              sheetSizeTimer = 0;
+            }, 180);
+          } else {
+            overlay.classList.remove('no-enter-motion');
+          }
+        });
       });
     }
   };
@@ -202,13 +241,34 @@
   });
   document.getElementById('group-profile-arrow').addEventListener('click', () => openSheet('create-group-overlay'));
 
-  document.getElementById('saori-matt-group-row').addEventListener('click', () => openSheet('group-page-overlay'));
-  document.getElementById('group-page-arrow').addEventListener('click', () => openSheet('group-overlay'));
-  document.getElementById('edit-group-mini').addEventListener('click', () => openSheet('group-profile-edit-overlay'));
-  document.getElementById('group-edit-arrow').addEventListener('click', () => openSheet('group-page-overlay'));
-  document.getElementById('start-dial-button').addEventListener('click', () => renderGroup('saori-matt'));
-  document.querySelectorAll('[data-group-sheet-select]').forEach((button) => {
-    button.addEventListener('click', () => renderGroup(button.dataset.groupSheetSelect));
+  const groupPageOverlayByKey = {
+    'saori-matt': 'group-page-overlay',
+    work: 'work-group-page-overlay',
+    family: 'family-group-page-overlay'
+  };
+  const groupEditClassByKey = {
+    'saori-matt': '',
+    work: 'work',
+    family: 'family'
+  };
+  let activeGroupPageKey = 'saori-matt';
+  let groupEditInitialName = 'Matt & Saori';
+
+  const openGroupPage = (key) => {
+    if (!groupPageOverlayByKey[key]) return;
+    activeGroupPageKey = key;
+    openSheet(groupPageOverlayByKey[key]);
+  };
+
+  document.getElementById('saori-matt-group-row').addEventListener('click', () => openGroupPage('saori-matt'));
+  document.querySelectorAll('[data-group-page]').forEach((button) => {
+    button.addEventListener('click', () => openGroupPage(button.dataset.groupPage));
+  });
+  document.querySelectorAll('.group-page-back').forEach((button) => {
+    button.addEventListener('click', () => openSheet('group-overlay'));
+  });
+  document.querySelectorAll('[data-start-group]').forEach((button) => {
+    button.addEventListener('click', () => renderGroup(button.dataset.startGroup));
   });
 
   // New Add someone -> Enter a Landline ID split flow.
@@ -293,7 +353,26 @@
   const groupEditAvatarFile = document.getElementById('group-edit-avatar-file');
   const groupEditAvatarPreview = document.getElementById('group-edit-avatar-preview');
   const groupEditSave = document.getElementById('group-edit-save');
+  const groupEditAvatarCircle = document.getElementById('group-edit-avatar-circle');
   let groupEditImageData = null;
+
+  const openGroupEdit = (key) => {
+    activeGroupPageKey = key;
+    const pageName = document.querySelector('[data-group-page-name="' + key + '"]');
+    groupEditInitialName = pageName ? pageName.textContent.trim() : (groups[key] ? groups[key].label : 'Dial group');
+    groupEditNameInput.value = groupEditInitialName;
+    groupEditImageData = null;
+    groupEditAvatarPreview.hidden = true;
+    groupEditAvatarPreview.removeAttribute('src');
+    groupEditAvatarCircle.className = 'group-edit-avatar-circle' + (groupEditClassByKey[key] ? ' ' + groupEditClassByKey[key] : '');
+    groupEditSave.disabled = true;
+    openSheet('group-profile-edit-overlay');
+  };
+
+  document.querySelectorAll('[data-edit-group]').forEach((button) => {
+    button.addEventListener('click', () => openGroupEdit(button.dataset.editGroup));
+  });
+  document.getElementById('group-edit-arrow').addEventListener('click', () => openGroupPage(activeGroupPageKey));
 
   const readImage = (file, onReady) => {
     if (!file || !file.type.startsWith('image/')) return;
@@ -328,12 +407,17 @@
     groupEditSave.disabled = false;
   });
   groupEditNameInput.addEventListener('input', () => {
-    groupEditSave.disabled = groupEditNameInput.value.trim() === 'Matt & Saori' && !groupEditImageData;
+    groupEditSave.disabled = groupEditNameInput.value.trim() === groupEditInitialName && !groupEditImageData;
   });
   groupEditSave.addEventListener('click', () => {
     if (groupEditSave.disabled) return;
+    const nextName = groupEditNameInput.value.trim() || groupEditInitialName;
+    const pageName = document.querySelector('[data-group-page-name="' + activeGroupPageKey + '"]');
+    if (pageName) pageName.textContent = nextName;
+    if (groups[activeGroupPageKey]) groups[activeGroupPageKey].label = nextName;
+    groupEditInitialName = nextName;
     groupEditSave.disabled = true;
-    openSheet('group-page-overlay');
+    openGroupPage(activeGroupPageKey);
   });
   document.getElementById('profile-update').addEventListener('click', () => {
     if (profileImageData) {

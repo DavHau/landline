@@ -30,3 +30,11 @@ Existing-member list reference:
 - Figma node 4227:1361 — Create a dial group
 - Figma node 4227:1530 — Add someone
 - Current list: Matt, Fiona, Yumie, Michiyo, Stuart
+
+
+V23.17 Figma sheet/detail references:
+- 4221:1243 — Main sheet / Saori's Landline, 320x240.
+- 4227:1422 — Edit profile, 320x584.
+- 4184:1129 — Dial groups, 320x584.
+- 4256:56204 — Dial group page Work people, 320x584.
+- 4256:56231 — Dial group page Family chat, 320x584.

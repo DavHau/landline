@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>LANDLINE prototype v23.15 — Create Group flow</title>
+  <title>LANDLINE prototype v23.17 — Create Group flow</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -92,7 +92,7 @@
 
       <div class="sheet-overlay landline-menu-overlay" id="landline-menu-overlay" aria-hidden="true">
         <button class="sheet-glass" data-close-sheet type="button" aria-label="Close Saori's Landline"></button>
-        <section class="bottom-sheet sheet-584 landline-menu-sheet" aria-label="Saori's Landline">
+        <section class="bottom-sheet sheet-240 landline-menu-sheet" aria-label="Saori's Landline">
           <button class="sheet-close" data-close-sheet type="button" aria-label="Close"><img src="assets/sheet-close.svg" alt=""></button>
           <h2>Saori’s Landline</h2>
           <div class="landline-menu-list">
@@ -128,8 +128,8 @@
             <button type="button" class="group-list-row create-group-row" id="create-new-group"><img class="group-list-add-art" src="assets/hovered-slot.svg" alt=""><span>Create a new group</span></button>
             <div class="group-list-divider" aria-hidden="true"></div>
             <button type="button" class="group-list-row" id="saori-matt-group-row"><span class="group-list-icon apricot"></span><span>Saori, Matt</span></button>
-            <button type="button" class="group-list-row" data-group-sheet-select="work"><span class="group-list-icon pink"></span><span>Work people</span></button>
-            <button type="button" class="group-list-row" data-group-sheet-select="family"><span class="group-list-icon blue"></span><span>Family chat</span></button>
+            <button type="button" class="group-list-row" data-group-page="work"><span class="group-list-icon pink"></span><span>Work people</span></button>
+            <button type="button" class="group-list-row" data-group-page="family"><span class="group-list-icon blue"></span><span>Family chat</span></button>
           </div>
         </section>
       </div>
@@ -189,16 +189,53 @@
       <div class="sheet-overlay group-page-overlay" id="group-page-overlay" aria-hidden="true">
         <button class="sheet-glass" data-close-sheet type="button" aria-label="Close Saori and Matt group"></button>
         <section class="bottom-sheet sheet-584 group-page-sheet nav-sheet" aria-label="Dial group page Saori and Matt">
-          <button class="sheet-arrow" id="group-page-arrow" type="button" aria-label="Back"><img src="assets/modal-back-arrow.svg" alt=""></button>
+          <button class="sheet-arrow group-page-back" id="group-page-arrow" type="button" aria-label="Back"><img src="assets/modal-back-arrow.svg" alt=""></button>
           <h2 class="sheet-nav-title">Dial group profile</h2>
           <div class="group-page-avatar" aria-hidden="true"></div>
-          <div class="group-page-name">Matt &amp; Saori</div>
+          <div class="group-page-name" data-group-page-name="saori-matt">Matt &amp; Saori</div>
           <div class="group-page-members" aria-label="Group members">
             <img src="assets/avatar-micheal.png" alt="Matt">
             <img src="assets/avatar-saori.png" alt="Saori">
           </div>
-          <button class="edit-group-mini" id="edit-group-mini" type="button">Edit group profile</button>
-          <button class="start-dial-button" id="start-dial-button" type="button"><img src="assets/dial-groups-icon.svg" alt=""><span>Start dial</span></button>
+          <button class="edit-group-mini" id="edit-group-mini" data-edit-group="saori-matt" type="button">Edit group profile</button>
+          <button class="start-dial-button" id="start-dial-button" data-start-group="saori-matt" type="button"><img src="assets/dial-groups-icon.svg" alt=""><span>Start dial</span></button>
+          <button class="leave-group-button" type="button">Leave this group</button>
+        </section>
+      </div>
+
+      <div class="sheet-overlay group-page-overlay" id="work-group-page-overlay" aria-hidden="true">
+        <button class="sheet-glass" data-close-sheet type="button" aria-label="Close Work people group"></button>
+        <section class="bottom-sheet sheet-584 group-page-sheet nav-sheet" aria-label="Dial group page Work people">
+          <button class="sheet-arrow group-page-back" id="work-group-page-arrow" type="button" aria-label="Back"><img src="assets/modal-back-arrow.svg" alt=""></button>
+          <h2 class="sheet-nav-title">Dial group profile</h2>
+          <div class="group-page-avatar work" aria-hidden="true"></div>
+          <div class="group-page-name" data-group-page-name="work">Work people</div>
+          <div class="group-page-members work-members" aria-label="Work people members">
+            <img src="assets/avatar-fiona.png" alt="Fiona">
+            <img src="assets/avatar-micheal.png" alt="Matt">
+            <img src="assets/avatar-saori.png" alt="Saori">
+            <img src="assets/avatar-stuart.png" alt="Stuart">
+          </div>
+          <button class="edit-group-mini" data-edit-group="work" type="button">Edit group profile</button>
+          <button class="start-dial-button" data-start-group="work" type="button"><img src="assets/dial-groups-icon.svg" alt=""><span>Start dial</span></button>
+          <button class="leave-group-button" type="button">Leave this group</button>
+        </section>
+      </div>
+
+      <div class="sheet-overlay group-page-overlay" id="family-group-page-overlay" aria-hidden="true">
+        <button class="sheet-glass" data-close-sheet type="button" aria-label="Close Family chat group"></button>
+        <section class="bottom-sheet sheet-584 group-page-sheet nav-sheet" aria-label="Dial group page Family chat">
+          <button class="sheet-arrow group-page-back" id="family-group-page-arrow" type="button" aria-label="Back"><img src="assets/modal-back-arrow.svg" alt=""></button>
+          <h2 class="sheet-nav-title">Dial group profile</h2>
+          <div class="group-page-avatar family" aria-hidden="true"></div>
+          <div class="group-page-name" data-group-page-name="family">Family chat</div>
+          <div class="group-page-members family-members" aria-label="Family chat members">
+            <img src="assets/avatar-saori.png" alt="Saori">
+            <img src="assets/avatar-yumie.png" alt="Yumie">
+            <img src="assets/avatar-michiyo.png" alt="Michiyo">
+          </div>
+          <button class="edit-group-mini" data-edit-group="family" type="button">Edit group profile</button>
+          <button class="start-dial-button" data-start-group="family" type="button"><img src="assets/dial-groups-icon.svg" alt=""><span>Start dial</span></button>
           <button class="leave-group-button" type="button">Leave this group</button>
         </section>
       </div>
@@ -212,7 +249,7 @@
           <input class="sheet-input group-name-input" id="group-edit-name-input" type="text" value="Matt &amp; Saori" autocomplete="off">
           <div class="field-label group-avatar-label">Avatar</div>
           <button class="avatar-upload group-avatar-upload group-edit-avatar-upload" id="group-edit-avatar-upload" type="button" aria-label="Upload group avatar">
-            <span class="group-edit-avatar-circle"></span>
+            <span class="group-edit-avatar-circle" id="group-edit-avatar-circle"></span>
             <img class="group-avatar-preview" id="group-edit-avatar-preview" alt="" hidden>
           </button>
           <p class="upload-help">Click to upload or drop an image to customise</p>

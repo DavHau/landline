@@ -2,7 +2,7 @@
 
 This is the concise continuity record for active Landline work. Update it whenever a meaningful milestone, technical decision, known issue, working baseline or next step changes.
 
-Last consolidated: 2026-09-08.
+Last consolidated: 2026-09-21.
 
 ## Repository / branch roles
 
@@ -34,11 +34,11 @@ The browser prototype is a design-validation implementation, not a production we
 
 ### Current prototype import status
 
-The repository structure and workflow documentation have been added on `chore/web-prototype-workflow`.
+`prototypes/app/` on `chore/web-prototype-workflow` contains the current cumulative browser prototype. The current version is **V23.17**, evolved from the accepted V22/V23.x baseline and current Figma Create Group section.
 
-The actual latest full Landline browser prototype is **not yet imported** because its source files are not present in the repository or in the currently available source archive. Do not recreate it from incomplete chat memory or screenshots and then treat that reconstruction as canonical.
+V23.17 keeps Saori’s Landline as the 320 × 240 main sheet, expands Edit profile and Dial groups to 320 × 584 in place, and adds dedicated Dial group profile pages for **Work people** and **Family chat**. Work people shows Fiona, Matt, Saori, and Stuart; Family chat shows Saori, Yumie, and Michiyo.
 
-The latest approved **Add User** flow from the Prototyping Features work should be the first feature captured in `prototypes/app/`. Once the real prototype source is available/imported, use it as the executable reference for the macOS Add User implementation.
+The browser prototype remains the executable design-validation reference before native implementation.
 
 ## macOS baseline — `main`
 
