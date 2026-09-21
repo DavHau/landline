@@ -4,7 +4,7 @@ This directory contains the current full browser prototype used to validate Land
 
 ## Current version
 
-**LANDLINE browser prototype V22** remains the canonical baseline in `index.html`.
+**This `main`-branch directory still contains the older V22 baseline.** The current shared browser prototype is **LANDLINE V23.15** on `chore/web-prototype-workflow`, commit `57f9bb9a379d43ed40ac08721fe4d8340e790842`.
 
 V22 is based on the established V21 browser prototype and adds the approved **Add Users** flow while retaining the existing profile, PTT, status, volume, VU and avatar interactions.
 
@@ -12,11 +12,7 @@ Open `index.html` directly in a modern browser for the V22 baseline.
 
 A focused **Dial Groups / Create a dial** prototype is now available in `group-creation.html`. It is based on the current group-creation Figma section and is the active executable reference for the new dial-group navigation/creation work while that flow is being reviewed.
 
-The latest approved review artifact is **Landline V23.13** (browser-ready ZIP handoff). Its source has not yet been merged into this directory, so `index.html` remains V22 and `group-creation.html` is older than the accepted review flow. Continue design review from V23.13 rather than regressing to the older focused page. Accepted V23.13 interaction details include: app → sheet slides up; sheet → sheet swaps content in place; top-left back controls are 32 × 32 with 10 px radius and `#F3F3F3` hover background without scaling; and Saori’s Landline uses the supplied account/group SVG icons at 32 × 32 with 105% icon hover scale.
-
-The current **V23.14 review build** is pending approval. Relative to V23.13, `Edit profile` and `Dial groups` now use top-left arrows back to `Saori’s Landline` instead of close buttons; back-arrow backgrounds are transparent at rest and `#F3F3F3` on hover; and the supplied Saori’s Landline menu icons use a 110% hover scale.
-
-The current **V23.15 review build** adds Figma-matched member states for the group dials: Work people shows Fiona, Stuart and Matt; Family chat shows Yumie and Michiyo. The back-arrow hover is explicitly a solid `#F3F3F3` at 100% opacity, while the default state remains transparent. V23.15 preserves the established app → sheet slide-up and sheet → sheet in-place content-swap behavior.
+For current design review and subsequent prototype work, use `chore/web-prototype-workflow/prototypes/app/` V23.15 rather than this older V22/focused page. V23.15 is the durable shared team source in GitHub; ZIP files are supplemental review artifacts. It includes the accepted app → sheet slide-up / sheet → sheet in-place swap convention, top-left back-arrow navigation, the supplied Saori’s Landline menu icons, and the Figma-matched Work people and Family chat dial members.
 
 ## V22 Add Users flow
 
