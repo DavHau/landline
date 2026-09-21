@@ -1,12 +1,12 @@
-LANDLINE browser prototype V23.15 — Create Group flow
+LANDLINE browser prototype V23.16 — Create Group flow
 
-V23.15 is the current cumulative browser prototype on the web-prototype branch.
+V23.16 is the current cumulative browser prototype on the web-prototype branch.
 
 CORE TRANSITION RULE
 - App → sheet: the first sheet slides up from the bottom.
 - Sheet → sheet: the sheet container stays in place and the content swaps directly. No new bottom-up entrance animation is replayed.
 
-V23.15 CHANGES
+V23.16 CHANGES
 - Edit profile and Dial groups use top-left back arrows to return to Saori's Landline.
 - Back-arrow controls are 32 x 32 with 10px radius.
 - Back-arrow default background is transparent.
@@ -14,7 +14,9 @@ V23.15 CHANGES
 - Saori's Landline uses supplied account-square and group-add SVG icons with 110% icon-only hover scaling.
 - Work people dial shows Fiona in pos-2, Stuart in pos-3, and Matt in pos-4.
 - Family chat dial shows Yumie in pos-2 and Michiyo in pos-3.
-- Fiona, Stuart, Yumie, and Michiyo dial avatars are current Figma exports.
+- Fiona, Stuart, Yumie, and Michiyo dial avatars are refreshed from exact Figma crops at 4× resolution.
+- Add someone and Create a dial group now share the current existing-member list: Matt, Fiona, Yumie, Michiyo, Stuart.
+- Existing-member avatars now use local Figma-derived assets.
 
 RETAINED BEHAVIOR
 - 320 x 672 Landline shell and dial geometry.

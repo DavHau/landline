@@ -1,4 +1,4 @@
-Landline V23.15 prototype asset provenance
+Landline V23.16 prototype asset provenance
 
 Repository:
 - mattatgit/landline
@@ -7,7 +7,7 @@ Repository:
 
 Baseline:
 - V22 canonical browser prototype commit: 6f57d9f20c88eb568b3cf24d0264bf826f8918e7
-- V23.15 evolves that prototype cumulatively.
+- V23.16 evolves that prototype cumulatively.
 
 Figma design reference:
 https://www.figma.com/design/cbBv0kCV29fX8h2QXbZNDk/SpacesOS-2026?node-id=4193-1036
@@ -17,7 +17,7 @@ User-supplied SVG artwork:
 - assets/account-square-1.svg — supplied as “account-square 1.svg”
 - assets/group-add-1.svg — supplied as “group-add-1 1.svg”
 
-Current Figma dial-avatar exports:
+Current Figma dial-avatar exports (refreshed at 4× for V23.16):
 - assets/avatar-fiona.png — node 4252:1618
 - assets/avatar-stuart.png — node 4252:1622
 - assets/avatar-yumie.png — node 4252:1626
@@ -25,3 +25,8 @@ Current Figma dial-avatar exports:
 - Matt uses assets/avatar-micheal.png.
 
 Other local assets are retained from the canonical Landline prototype asset library and prior accepted V23 iterations.
+
+Existing-member list reference:
+- Figma node 4227:1361 — Create a dial group
+- Figma node 4227:1530 — Add someone
+- Current list: Matt, Fiona, Yumie, Michiyo, Stuart

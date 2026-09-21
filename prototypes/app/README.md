@@ -4,11 +4,11 @@ This directory contains Landline's current full browser prototype used to valida
 
 ## Current version
 
-**LANDLINE browser prototype V23.15** is the current canonical browser prototype on the `chore/web-prototype-workflow` branch.
+**LANDLINE browser prototype V23.16** is the current canonical browser prototype on the `chore/web-prototype-workflow` branch.
 
 Open `index.html` directly in a modern browser. No package manager or build step is required.
 
-V23.15 evolves the V22 baseline cumulatively. It preserves the established 320 × 672 Landline shell, Profile, PTT, status, volume, VU, avatar, Add User, Share ID, and existing dial behavior while adding the reviewed Dial Groups / Create Group flows.
+V23.16 evolves the V22 baseline cumulatively. It preserves the established 320 × 672 Landline shell, Profile, PTT, status, volume, VU, avatar, Add User, Share ID, and existing dial behavior while adding the reviewed Dial Groups / Create Group flows.
 
 ## Sheet transition convention
 
@@ -17,7 +17,7 @@ This is an established Landline interaction rule:
 - **App → sheet:** the first sheet slides up from the bottom.
 - **Sheet → sheet:** keep the sheet container in place and replace the content directly. Do not replay the bottom-up entrance animation.
 
-## V23.15 group behavior
+## V23.16 group behavior
 
 - Top group dropdown: Home dial / Saori, Matt / Work people / Family chat.
 - Dial Groups button opens Saori's Landline.
@@ -25,8 +25,9 @@ This is an established Landline interaction rule:
 - Edit profile and Dial groups use a top-left back arrow to return to Saori's Landline.
 - Back arrow: 32 × 32, 10 px radius, transparent by default, solid `#F3F3F3` at 100% opacity on hover, no hover scaling.
 - Saori's Landline account/group icons use the supplied SVG artwork with 110% icon-only hover scale.
-- Work people dial shows Saori + Fiona + Stuart + Matt.
-- Family chat dial shows Saori + Yumie + Michiyo.
+- Work people dial shows Saori + Fiona + Stuart + Matt, using refreshed 4× Figma avatar exports for Fiona and Stuart.
+- Family chat dial shows Saori + Yumie + Michiyo, using refreshed 4× Figma avatar exports for Yumie and Michiyo.
+- Add someone and Create a dial group use the current Figma existing-member list: Matt, Fiona, Yumie, Michiyo, Stuart, with local avatar assets.
 - Create Group includes existing-member selection, Landline ID entry, group profile creation, and the existing Saori/Matt group detail/edit flow.
 - Member selection circles use the corrected centered tick treatment.
 - Bottom-sheet backdrop remains `#323232` at 90% opacity.
