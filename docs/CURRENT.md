@@ -45,6 +45,8 @@ A focused Dial Groups / Create a dial prototype now lives at `prototypes/app/gro
 
 The latest approved Create Group review lineage is **Landline V23.13**. It is a browser-ready ZIP handoff built cumulatively from V23.11/V23.12, not yet committed into `prototypes/app/`. Preserve these accepted interaction rules in subsequent prototype work: app → sheet slides up from the bottom; sheet → sheet swaps content in place without replaying the entrance animation; deeper sheets use a 32 × 32 top-left back control with 10 px corner radius; back-control hover changes the background to `#F3F3F3` without scaling; and the Saori’s Landline `Edit profile` / `Groups` rows use the supplied 32 × 32 account/group SVGs with 105% icon hover scale. The repository source still needs to be brought forward from the older V22/focused-prototype state before native implementation relies on the group flow.
 
+A **V23.14 review build** has now been produced from V23.13 and is pending review. It removes the close buttons from `Edit profile` and `Dial groups`, replacing them with top-left back arrows that return to `Saori’s Landline` via the established sheet-to-sheet in-place swap. Back-arrow buttons are transparent by default and change to `#F3F3F3` on hover without scaling. The supplied Saori’s Landline account/group SVG icons remain 32 × 32 and now scale to 110% on row hover.
+
 ## Stable macOS baseline — `main`
 
 The stable macOS implementation on `main` is the integrated SwiftUI/AppKit + Iroh baseline historically called Landline Iroh Spike V10.
