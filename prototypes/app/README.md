@@ -12,6 +12,8 @@ Open `index.html` directly in a modern browser for the V22 baseline.
 
 A focused **Dial Groups / Create a dial** prototype is now available in `group-creation.html`. It is based on the current group-creation Figma section and is the active executable reference for the new dial-group navigation/creation work while that flow is being reviewed.
 
+The latest approved review artifact is **Landline V23.13** (browser-ready ZIP handoff). Its source has not yet been merged into this directory, so `index.html` remains V22 and `group-creation.html` is older than the accepted review flow. Continue design review from V23.13 rather than regressing to the older focused page. Accepted V23.13 interaction details include: app → sheet slides up; sheet → sheet swaps content in place; top-left back controls are 32 × 32 with 10 px radius and `#F3F3F3` hover background without scaling; and Saori’s Landline uses the supplied account/group SVG icons at 32 × 32 with 105% icon hover scale.
+
 ## V22 Add Users flow
 
 - Hover any empty dial slot to reveal the 56 px add-user state and the `Add someone to Landline` status message.
