@@ -1,12 +1,27 @@
-Recreated from surviving LANDLINE prototype assets plus the user-supplied images retained in this conversation.
+Landline V23.15 prototype asset provenance
 
-User-supplied:
-- Stuart.png -> assets/avatar-stuart.png
-- Simple_line.png -> assets/avatar-simple.png
-- Realistic_woman.png -> assets/avatar-realistic.png
-- Toyface.png -> assets/avatar-toyface.png
-- Simple_line_change.png / Simple_line_selected.png
-- Realistic_woman_change.png / Realistic_woman_selected.png
-- Toyface_change.png / Toyface_selected.png
+Repository:
+- mattatgit/landline
+- branch: chore/web-prototype-workflow
+- prototype directory: prototypes/app/
 
-Core UI vectors and earlier avatars were recovered from the surviving LANDLINE v6 artifact.
+Baseline:
+- V22 canonical browser prototype commit: 6f57d9f20c88eb568b3cf24d0264bf826f8918e7
+- V23.15 evolves that prototype cumulatively.
+
+Figma design reference:
+https://www.figma.com/design/cbBv0kCV29fX8h2QXbZNDk/SpacesOS-2026?node-id=4193-1036
+
+User-supplied SVG artwork:
+- assets/modal-back-arrow.svg — supplied as “Modal back arrow icons clolour 2.svg”
+- assets/account-square-1.svg — supplied as “account-square 1.svg”
+- assets/group-add-1.svg — supplied as “group-add-1 1.svg”
+
+Current Figma dial-avatar exports:
+- assets/avatar-fiona.png — node 4252:1618
+- assets/avatar-stuart.png — node 4252:1622
+- assets/avatar-yumie.png — node 4252:1626
+- assets/avatar-michiyo.png — node 4252:56128
+- Matt uses assets/avatar-micheal.png.
+
+Other local assets are retained from the canonical Landline prototype asset library and prior accepted V23 iterations.

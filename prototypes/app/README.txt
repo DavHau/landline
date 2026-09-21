@@ -1,25 +1,31 @@
-LANDLINE browser prototype — recreated v21
+LANDLINE browser prototype V23.15 — Create Group flow
 
-Open index.html directly in a modern browser.
+V23.15 is the current cumulative browser prototype on the web-prototype branch.
 
-This recreation restores the v21 behavior from the conversation:
-- interactive 0–100 volume slider
-- centred speaking animation
-- PTT self/other speaking badge handoff
-- fixed-height horizontal VU meter with green/orange/red levels
-- medium-weight status text
-- muted status icon retained on PTT hover
-- #171717 page background
-- profile creation/edit sheet
-- 95% profile-sheet opacity
-- sheet-button hover scaling
-- 105% hover scaling on the entire 24px Profile button
-- placeholder avatar boxes before simulated photo upload
-- current user-supplied profile avatars and clean Stuart avatar
+CORE TRANSITION RULE
+- App → sheet: the first sheet slides up from the bottom.
+- Sheet → sheet: the sheet container stays in place and the content swaps directly. No new bottom-up entrance animation is replayed.
 
-V22 ADD USERS FLOW
-- Based directly on v21; existing UI/interactions retained.
-- Hover any empty dial slot to reveal the Figma 56px + state and status message.
-- Click an empty slot to open the Add / Invite sheet.
-- Enter a Landline ID and press Return to add a dummy avatar to that slot and close the sheet.
-- Copy Landline ID copies the six-word ID, shows “Copied” briefly, then closes the sheet.
+V23.15 CHANGES
+- Edit profile and Dial groups use top-left back arrows to return to Saori's Landline.
+- Back-arrow controls are 32 x 32 with 10px radius.
+- Back-arrow default background is transparent.
+- Back-arrow hover background is solid #F3F3F3 at 100% opacity, with no scaling.
+- Saori's Landline uses supplied account-square and group-add SVG icons with 110% icon-only hover scaling.
+- Work people dial shows Fiona in pos-2, Stuart in pos-3, and Matt in pos-4.
+- Family chat dial shows Yumie in pos-2 and Michiyo in pos-3.
+- Fiona, Stuart, Yumie, and Michiyo dial avatars are current Figma exports.
+
+RETAINED BEHAVIOR
+- 320 x 672 Landline shell and dial geometry.
+- PTT, status, volume, VU, Profile and avatar interactions.
+- Share your Landline ID and Add someone flows.
+- Group-title dropdown and Dial Groups button.
+- Create Group member selection, Landline ID entry, group profile, Saori/Matt group detail and edit.
+- #323232 / 90% sheet backdrop.
+- Corrected selected-circle tick alignment.
+
+DESIGN REFERENCE
+https://www.figma.com/design/cbBv0kCV29fX8h2QXbZNDk/SpacesOS-2026?node-id=4193-1036
+
+Open index.html directly in a modern browser. No build step is required.
