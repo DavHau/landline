@@ -8,7 +8,8 @@ Last consolidated: 2026-09-21.
 
 Repository: `mattatgit/landline`
 
-- `main` — canonical stable macOS SwiftUI/AppKit + Iroh v1 baseline, canonical V22 browser prototype and continuity docs.
+- `main` — canonical stable macOS SwiftUI/AppKit + Iroh v1 baseline and continuity docs; its checked-in `prototypes/app/` source is still the older V22/focused-group state.
+- `chore/web-prototype-workflow` — current shared browser-prototype branch; Landline V23.15 is committed here under `prototypes/app/`.
 - `feature/macos-add-user` — native macOS Add User work based on the approved V22 flow.
 - `feature/macos-multi-user` — macOS protocol-v2/direct-mesh group transport before the latest runtime repair.
 - `feature/macos-multi-user-fix` — current macOS group repair branch; retains participants across transient session failure and restores the default ToyBuddha avatar.
@@ -39,15 +40,11 @@ The browser prototype is a design-validation implementation, not a production we
 
 ### Canonical browser prototype
 
-Landline V22 is committed under `prototypes/app/` and remains the executable interaction reference for the approved Add User flow. It includes empty-slot hover, Add/Invite sheet, Landline-ID entry, copy-ID feedback, Profile, PTT, status, volume, VU and avatar interactions.
+The current shared browser prototype is **Landline V23.15** on `chore/web-prototype-workflow`, commit `57f9bb9a379d43ed40ac08721fe4d8340e790842`. Its `prototypes/app/` source contains the cumulative V22 behaviors plus the reviewed Dial Groups / Create Group flows, current Figma member states, and the established sheet-transition convention. GitHub is the primary team handoff; browser-ready ZIPs are supplemental review artifacts. `main` still contains the older V22/focused-group prototype source until the web-prototype branch is merged or otherwise folded back.
 
 A focused Dial Groups / Create a dial prototype now lives at `prototypes/app/group-creation.html`, based on the Figma `Create group` section (`4193:1036`). It currently covers two review-stage interactions without modifying the proven V22 baseline: clicking the top group title opens the dial-title dropdown and selecting `Saori, Matt` switches the title/dial state; clicking the top-right dial-groups icon opens the `Dial groups` bottom sheet and choosing `Create a dial` transitions to the first `Create a dial` sheet. The prototype intentionally stops before the later dial-group-profile step until that follow-on flow is explicitly taken into scope. Once the interaction is approved, fold it into the full canonical app prototype rather than leaving a divergent focused page.
 
-The latest approved Create Group review lineage is **Landline V23.13**. It is a browser-ready ZIP handoff built cumulatively from V23.11/V23.12, not yet committed into `prototypes/app/`. Preserve these accepted interaction rules in subsequent prototype work: app → sheet slides up from the bottom; sheet → sheet swaps content in place without replaying the entrance animation; deeper sheets use a 32 × 32 top-left back control with 10 px corner radius; back-control hover changes the background to `#F3F3F3` without scaling; and the Saori’s Landline `Edit profile` / `Groups` rows use the supplied 32 × 32 account/group SVGs with 105% icon hover scale. The repository source still needs to be brought forward from the older V22/focused-prototype state before native implementation relies on the group flow.
-
-A **V23.14 review build** has now been produced from V23.13 and is pending review. It removes the close buttons from `Edit profile` and `Dial groups`, replacing them with top-left back arrows that return to `Saori’s Landline` via the established sheet-to-sheet in-place swap. Back-arrow buttons are transparent by default and change to `#F3F3F3` on hover without scaling. The supplied Saori’s Landline account/group SVG icons remain 32 × 32 and now scale to 110% on row hover.
-
-A **V23.15 review build** has now been produced from V23.14. It keeps the Edit profile and Dial groups back-arrow navigation, makes the hover fill explicitly solid `#F3F3F3` at 100% opacity with a transparent default state, and adds the current Figma dial-member states: Work people shows Fiona, Stuart and Matt; Family chat shows Yumie and Michiyo. The Figma-exported Fiona/Stuart/Yumie/Michiyo 48 px avatars are included in the review ZIP. The established transition convention remains unchanged: app → sheet slides up; sheet → sheet swaps content in place.
+V23.15 preserves the accepted interaction rules: app → sheet slides up from the bottom; sheet → sheet keeps the sheet container in place and swaps content without replaying the entrance animation; deeper sheets use a 32 × 32 top-left back control with 10 px corner radius; the back control is transparent by default and uses solid `#F3F3F3` at 100% opacity on hover without scaling; Saori’s Landline uses the supplied account/group SVGs with 110% icon-only hover scale; Work people shows Fiona, Stuart and Matt; Family chat shows Yumie and Michiyo.
 
 ## Stable macOS baseline — `main`
 
