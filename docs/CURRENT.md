@@ -47,6 +47,8 @@ The latest approved Create Group review lineage is **Landline V23.13**. It is a 
 
 A **V23.14 review build** has now been produced from V23.13 and is pending review. It removes the close buttons from `Edit profile` and `Dial groups`, replacing them with top-left back arrows that return to `Saori’s Landline` via the established sheet-to-sheet in-place swap. Back-arrow buttons are transparent by default and change to `#F3F3F3` on hover without scaling. The supplied Saori’s Landline account/group SVG icons remain 32 × 32 and now scale to 110% on row hover.
 
+A **V23.15 review build** has now been produced from V23.14. It keeps the Edit profile and Dial groups back-arrow navigation, makes the hover fill explicitly solid `#F3F3F3` at 100% opacity with a transparent default state, and adds the current Figma dial-member states: Work people shows Fiona, Stuart and Matt; Family chat shows Yumie and Michiyo. The Figma-exported Fiona/Stuart/Yumie/Michiyo 48 px avatars are included in the review ZIP. The established transition convention remains unchanged: app → sheet slides up; sheet → sheet swaps content in place.
+
 ## Stable macOS baseline — `main`
 
 The stable macOS implementation on `main` is the integrated SwiftUI/AppKit + Iroh baseline historically called Landline Iroh Spike V10.
