@@ -2,7 +2,7 @@
 
 This is the concise continuity record for active Landline work. Update it whenever a meaningful milestone, technical decision, known issue, working baseline or next step changes.
 
-Last consolidated: 2026-09-15.
+Last consolidated: 2026-09-21.
 
 ## Repository / branch roles
 
@@ -42,6 +42,8 @@ The browser prototype is a design-validation implementation, not a production we
 Landline V22 is committed under `prototypes/app/` and remains the executable interaction reference for the approved Add User flow. It includes empty-slot hover, Add/Invite sheet, Landline-ID entry, copy-ID feedback, Profile, PTT, status, volume, VU and avatar interactions.
 
 A focused Dial Groups / Create a dial prototype now lives at `prototypes/app/group-creation.html`, based on the Figma `Create group` section (`4193:1036`). It currently covers two review-stage interactions without modifying the proven V22 baseline: clicking the top group title opens the dial-title dropdown and selecting `Saori, Matt` switches the title/dial state; clicking the top-right dial-groups icon opens the `Dial groups` bottom sheet and choosing `Create a dial` transitions to the first `Create a dial` sheet. The prototype intentionally stops before the later dial-group-profile step until that follow-on flow is explicitly taken into scope. Once the interaction is approved, fold it into the full canonical app prototype rather than leaving a divergent focused page.
+
+The latest approved Create Group review lineage is **Landline V23.13**. It is a browser-ready ZIP handoff built cumulatively from V23.11/V23.12, not yet committed into `prototypes/app/`. Preserve these accepted interaction rules in subsequent prototype work: app → sheet slides up from the bottom; sheet → sheet swaps content in place without replaying the entrance animation; deeper sheets use a 32 × 32 top-left back control with 10 px corner radius; back-control hover changes the background to `#F3F3F3` without scaling; and the Saori’s Landline `Edit profile` / `Groups` rows use the supplied 32 × 32 account/group SVGs with 105% icon hover scale. The repository source still needs to be brought forward from the older V22/focused-prototype state before native implementation relies on the group flow.
 
 ## Stable macOS baseline — `main`
 
