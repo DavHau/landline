@@ -2,7 +2,7 @@
 
 This is the concise continuity record for active Landline work. Update it whenever a meaningful milestone, technical decision, known issue, working baseline or next step changes.
 
-Last consolidated: 2026-09-21.
+Last consolidated: 2026-09-22.
 
 ## Repository / branch roles
 
