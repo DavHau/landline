@@ -9,7 +9,7 @@ Last consolidated: 2026-09-22.
 Repository: `mattatgit/landline`
 
 - `main` — canonical stable macOS SwiftUI/AppKit + Iroh v1 baseline and continuity docs; its checked-in `prototypes/app/` source is still the older V22/focused-group state.
-- `chore/web-prototype-workflow` — current shared browser-prototype branch; Landline V23.15 is committed here under `prototypes/app/`.
+- `chore/web-prototype-workflow` — current shared browser-prototype branch; Landline V23.18 is committed here under `prototypes/app/`.
 - `feature/macos-add-user` — native macOS Add User work based on the approved V22 flow.
 - `feature/macos-multi-user` — macOS protocol-v2/direct-mesh group transport before the latest runtime repair.
 - `feature/macos-multi-user-fix` — current macOS group repair branch; retains participants across transient session failure and restores the default ToyBuddha avatar.
@@ -40,11 +40,11 @@ The browser prototype is a design-validation implementation, not a production we
 
 ### Canonical browser prototype
 
-The current shared browser prototype is **Landline V23.15** on `chore/web-prototype-workflow`, commit `57f9bb9a379d43ed40ac08721fe4d8340e790842`. Its `prototypes/app/` source contains the cumulative V22 behaviors plus the reviewed Dial Groups / Create Group flows, current Figma member states, and the established sheet-transition convention. GitHub is the primary team handoff; browser-ready ZIPs are supplemental review artifacts. `main` still contains the older V22/focused-group prototype source until the web-prototype branch is merged or otherwise folded back.
+The current shared browser prototype is **Landline V23.18** on `chore/web-prototype-workflow`, commit `eaa037ac5398c04e1fef4ec0392b21a23beb62f9`. Its `prototypes/app/` source contains the cumulative V22 behaviors plus the reviewed Dial Groups / Create Group flows, current Figma member states, and the established sheet-transition convention. V23.18 adds the Figma Dial Group title hover/edit affordance: editable group rows turn black, reveal the exact 14 × 14 pencil icon, and clicking the pencil opens that group’s Dial group profile page while clicking the group name still switches the active dial. GitHub is the primary team handoff; browser-ready ZIPs are supplemental review artifacts. `main` still contains the older V22/focused-group prototype source until the web-prototype branch is merged or otherwise folded back.
 
 A focused Dial Groups / Create a dial prototype now lives at `prototypes/app/group-creation.html`, based on the Figma `Create group` section (`4193:1036`). It currently covers two review-stage interactions without modifying the proven V22 baseline: clicking the top group title opens the dial-title dropdown and selecting `Saori, Matt` switches the title/dial state; clicking the top-right dial-groups icon opens the `Dial groups` bottom sheet and choosing `Create a dial` transitions to the first `Create a dial` sheet. The prototype intentionally stops before the later dial-group-profile step until that follow-on flow is explicitly taken into scope. Once the interaction is approved, fold it into the full canonical app prototype rather than leaving a divergent focused page.
 
-V23.15 preserves the accepted interaction rules: app → sheet slides up from the bottom; sheet → sheet keeps the sheet container in place and swaps content without replaying the entrance animation; deeper sheets use a 32 × 32 top-left back control with 10 px corner radius; the back control is transparent by default and uses solid `#F3F3F3` at 100% opacity on hover without scaling; Saori’s Landline uses the supplied account/group SVGs with 110% icon-only hover scale; Work people shows Fiona, Stuart and Matt; Family chat shows Yumie and Michiyo.
+V23.18 preserves the accepted interaction rules: app → sheet slides up from the bottom; sheet → sheet keeps the sheet container in place and swaps content without replaying the entrance animation; deeper sheets use a 32 × 32 top-left back control with 10 px corner radius; the back control is transparent by default and uses solid `#F3F3F3` at 100% opacity on hover without scaling; Saori’s Landline uses the supplied account/group SVGs with 110% icon-only hover scale; Work people shows Fiona, Stuart and Matt; Family chat shows Yumie and Michiyo.
 
 ## Stable macOS baseline — `main`
 
