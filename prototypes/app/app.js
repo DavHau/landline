@@ -264,6 +264,12 @@
   document.querySelectorAll('[data-group-page]').forEach((button) => {
     button.addEventListener('click', () => openGroupPage(button.dataset.groupPage));
   });
+  groupDropdown.querySelectorAll('[data-group-edit]').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      openGroupPage(button.dataset.groupEdit);
+    });
+  });
   document.querySelectorAll('.group-page-back').forEach((button) => {
     button.addEventListener('click', () => openSheet('group-overlay'));
   });

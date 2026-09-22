@@ -2,7 +2,7 @@
 
 This is the concise continuity record for active Landline work. Update it whenever a meaningful milestone, technical decision, known issue, working baseline or next step changes.
 
-Last consolidated: 2026-09-21.
+Last consolidated: 2026-09-22.
 
 ## Repository / branch roles
 
@@ -34,9 +34,9 @@ The browser prototype is a design-validation implementation, not a production we
 
 ### Current prototype import status
 
-`prototypes/app/` on `chore/web-prototype-workflow` contains the current cumulative browser prototype. The current version is **V23.17**, evolved from the accepted V22/V23.x baseline and current Figma Create Group section.
+`prototypes/app/` on `chore/web-prototype-workflow` contains the current cumulative browser prototype. The current version is **V23.18**, evolved from the accepted V22/V23.x baseline and current Figma Create Group section.
 
-V23.17 keeps Saori’s Landline as the 320 × 240 main sheet, expands Edit profile and Dial groups to 320 × 584 in place, and adds dedicated Dial group profile pages for **Work people** and **Family chat**. Work people shows Fiona, Matt, Saori, and Stuart; Family chat shows Saori, Yumie, and Michiyo.
+V23.18 keeps Saori’s Landline as the 320 × 240 main sheet, expands Edit profile and Dial groups to 320 × 584 in place, and adds dedicated Dial group profile pages for **Work people** and **Family chat**. Work people shows Fiona, Matt, Saori, and Stuart; Family chat shows Saori, Yumie, and Michiyo. The open Dial Group title menu now follows the Figma hover treatment: editable group rows turn black, reveal the 14 × 14 pencil icon, and the pencil opens the corresponding Dial group profile page while the group-name click continues to switch the active dial.
 
 The browser prototype remains the executable design-validation reference before native implementation.
 

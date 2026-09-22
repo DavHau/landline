@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>LANDLINE prototype v23.17 — Create Group flow</title>
+  <title>LANDLINE prototype v23.18 — Create Group flow</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,10 +13,21 @@
       <button class="group-title" id="group-title" type="button" aria-expanded="false"><span class="group-mini home" id="group-title-icon"></span><span class="group-title-copy" id="group-title-copy">Home dial</span><span class="group-chevron" aria-hidden="true"></span></button>
       <button class="dial-groups-button" id="dial-groups-button" type="button" aria-label="Dial groups"><img class="dial-groups-icon" src="assets/dial-groups-icon.svg" alt="" aria-hidden="true"></button>
       <div class="group-dropdown" id="group-dropdown" aria-hidden="true">
-        <button type="button" data-group="home"><span class="group-mini home"></span><span>Home dial</span></button>
-        <button type="button" data-group="saori-matt"><span class="group-mini apricot"></span><span>Saori, Matt</span></button>
-        <button type="button" data-group="work"><span class="group-mini pink"></span><span>Work people</span></button>
-        <button type="button" data-group="family"><span class="group-mini blue"></span><span>Family chat</span></button>
+        <div class="group-dropdown-row home-row">
+          <button class="group-dropdown-choice" type="button" data-group="home"><span class="group-mini home"></span><span class="group-dropdown-label">Home dial</span></button>
+        </div>
+        <div class="group-dropdown-row editable-group-row">
+          <button class="group-dropdown-choice" type="button" data-group="saori-matt"><span class="group-mini apricot"></span><span class="group-dropdown-label">Saori, Matt</span></button>
+          <button class="group-pencil-button" type="button" data-group-edit="saori-matt" aria-label="Open Saori, Matt group profile"><img src="assets/group-pencil.svg" alt=""></button>
+        </div>
+        <div class="group-dropdown-row editable-group-row">
+          <button class="group-dropdown-choice" type="button" data-group="work"><span class="group-mini pink"></span><span class="group-dropdown-label">Work people</span></button>
+          <button class="group-pencil-button" type="button" data-group-edit="work" aria-label="Open Work people group profile"><img src="assets/group-pencil.svg" alt=""></button>
+        </div>
+        <div class="group-dropdown-row editable-group-row">
+          <button class="group-dropdown-choice" type="button" data-group="family"><span class="group-mini blue"></span><span class="group-dropdown-label">Family chat</span></button>
+          <button class="group-pencil-button" type="button" data-group-edit="family" aria-label="Open Family chat group profile"><img src="assets/group-pencil.svg" alt=""></button>
+        </div>
       </div>
       <div class="dial">
         <div class="contact contact-self pos-1" id="self-contact" role="button" tabindex="0" aria-label="Share your Landline ID" title="Share your Landline ID"><img id="self-avatar" src="assets/avatar-saori.png" alt="Your avatar"><span class="speaking-badge self-speaking-badge" aria-label="You are talking"><img class="speaking-disc" src="assets/speaking-disc.svg" alt=""><span class="speaking-lines" aria-hidden="true"><span class="speaking-line speaking-line-1"></span><span class="speaking-line speaking-line-2"></span><span class="speaking-line speaking-line-3"></span><span class="speaking-line speaking-line-4"></span><span class="speaking-line speaking-line-5"></span></span></span></div>

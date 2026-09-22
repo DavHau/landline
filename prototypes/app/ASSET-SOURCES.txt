@@ -1,4 +1,4 @@
-Landline V23.16 prototype asset provenance
+Landline V23.18 prototype asset provenance
 
 Repository:
 - mattatgit/landline
@@ -38,3 +38,8 @@ V23.17 Figma sheet/detail references:
 - 4184:1129 — Dial groups, 320x584.
 - 4256:56204 — Dial group page Work people, 320x584.
 - 4256:56231 — Dial group page Family chat, 320x584.
+
+
+V23.18 Dial Group title edit asset:
+- assets/group-pencil.svg — exact SVG export from Figma node 4266:56288.
+- Hover state references: 4266:56273 and 4266:56294.

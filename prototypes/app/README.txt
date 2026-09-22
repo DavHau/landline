@@ -1,6 +1,6 @@
-LANDLINE browser prototype V23.17 — Create Group flow
+LANDLINE browser prototype V23.18 — Create Group flow
 
-V23.16 is the current cumulative browser prototype on the web-prototype branch.
+V23.18 is the current cumulative browser prototype on the web-prototype branch.
 
 CORE TRANSITION RULE
 - App → sheet: the first sheet slides up from the bottom.
@@ -40,3 +40,12 @@ V23.17 main-sheet / dial-group-page refinements
 - Dial groups -> Family chat now opens the Figma Dial group page Family chat (node 4256:56231).
 - Work people detail shows Fiona, Matt, Saori, and Stuart; Family chat detail shows Saori, Yumie, and Michiyo.
 - Start dial on each detail page switches to the corresponding accepted dial state; Edit group profile reuses the existing profile-edit flow and returns to the originating group page.
+
+
+V23.18 dial-title edit affordance
+- In the open Dial Group title menu, hovering Saori, Matt / Work people / Family chat uses the Figma black row hover state and reveals the 14 x 14 pencil icon on the right.
+- The pencil is the exact Figma asset from node 4266:56288.
+- Clicking a pencil opens that group’s existing Dial group profile sheet without changing the active dial selection.
+- The group name itself keeps the existing behavior: clicking it selects/switches the active dial.
+- Home dial is not editable and does not show a pencil.
+- Figma hover references: 4266:56273 and 4266:56294.
